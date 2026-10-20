@@ -1,0 +1,24 @@
+# Source-only allowlist: local account/game/build data is never tracked.
+/*
+!/.gitignore
+!/README.md
+!/SECURITY.md
+!/requirements.txt
+!/requirements-dev.txt
+!/main.py
+!/compilar.bat
+!/core/
+!/ui/
+!/assets/
+!/tests/
+/core/*
+!/core/*.py
+/ui/*
+!/ui/*.py
+/assets/*
+!/assets/*.png
+!/assets/*.ico
+/tests/*
+!/tests/*.py
+__pycache__/
+*.pyc

@@ -1,0 +1,4 @@
+customtkinter==6.0.0
+Pillow==12.3.0
+requests==2.34.2
+minecraft-launcher-lib==8.0
