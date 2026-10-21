@@ -11,15 +11,15 @@ from core.server_pinger import ping_server
 
 
 class SecurityChecks(unittest.TestCase):
-    def test_azure_address_migrates_but_custom_address_is_preserved(self):
+    def test_hovy_address_migrates_but_custom_address_is_preserved(self):
         from core import config
         with tempfile.TemporaryDirectory() as directory:
             path=Path(directory,"launcher_config.json")
-            for old in ("158.23.58.93","158.23.58.93:25565"):
+            for old in ("67.222.149.6","67.222.149.6:25611","158.23.58.93"):
                 path.write_text(json.dumps({"server_ip":old,"username":"TestPlayer"}))
                 with patch.object(config,"get_config_path",return_value=str(path)):
                     result=config.load_config()
-                    self.assertEqual(result["server_ip"],"67.222.149.6:25611")
+                    self.assertEqual(result["server_ip"],"158.23.58.93:25565")
                     self.assertEqual(result["username"],"TestPlayer")
             path.write_text(json.dumps({"server_ip":"custom.example:25565"}))
             with patch.object(config,"get_config_path",return_value=str(path)):

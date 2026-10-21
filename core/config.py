@@ -2,8 +2,8 @@ import os
 import json
 
 DEFAULT_MANIFEST_URL = "https://raw.githubusercontent.com/ramirooppp/hombrosafio/main/manifest.json"
-DEFAULT_SERVER_IP = "67.222.149.6:25611"
-OBSOLETE_SERVER_IPS = {"149.202.84.78:25601", "158.23.58.93", "158.23.58.93:25565"}
+DEFAULT_SERVER_IP = "158.23.58.93:25565"
+OBSOLETE_SERVER_IPS = {"149.202.84.78:25601", "67.222.149.6", "67.222.149.6:25611", "158.23.58.93"}
 
 def get_base_hombrosafio_dir():
     appdata = os.environ.get("APPDATA")
