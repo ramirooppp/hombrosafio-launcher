@@ -1,9 +1,25 @@
 import os
 import json
+import re
 
 DEFAULT_MANIFEST_URL = "https://raw.githubusercontent.com/ramirooppp/hombrosafio/main/manifest.json"
-DEFAULT_SERVER_IP = "158.23.58.93:25565"
-OBSOLETE_SERVER_IPS = {"149.202.84.78:25601", "67.222.149.6", "67.222.149.6:25611", "158.23.58.93"}
+DEFAULT_SERVER_IP = "67.222.149.6:25611"
+OBSOLETE_SERVER_IPS = {"149.202.84.78:25601", "158.23.58.93:25565", "158.23.58.93", "67.222.149.6"}
+
+
+def resolve_server_ip(current, manifest):
+    """Follow the official pack endpoint without replacing a custom server."""
+    current = current or DEFAULT_SERVER_IP
+    if current not in OBSOLETE_SERVER_IPS | {DEFAULT_SERVER_IP}:
+        return current
+    target = manifest.get("server_ip") if isinstance(manifest, dict) else None
+    if isinstance(target, str) and target in OBSOLETE_SERVER_IPS:
+        return current
+    if not isinstance(target, str) or not re.fullmatch(r"[A-Za-z0-9.-]+(?::[0-9]{1,5})?", target):
+        return current
+    if ":" in target and not 1 <= int(target.rsplit(":", 1)[1]) <= 65535:
+        return current
+    return target
 
 def get_base_hombrosafio_dir():
     appdata = os.environ.get("APPDATA")

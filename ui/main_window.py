@@ -14,7 +14,7 @@ from PIL import Image, ImageTk, ImageDraw, ImageFilter, ImageFont
 import customtkinter as ctk
 import tkinter as tk
 
-from core.config import load_config, save_config, get_base_hombrosafio_dir, DEFAULT_MANIFEST_URL, DEFAULT_SERVER_IP
+from core.config import load_config, save_config, get_base_hombrosafio_dir, resolve_server_ip, DEFAULT_MANIFEST_URL, DEFAULT_SERVER_IP
 from core.server_pinger import ping_server
 from core.sync import fetch_manifest, sync_mods
 from core.runtime_manager import find_or_install_java_25, ensure_minecraft_and_fabric
@@ -977,7 +977,7 @@ class HombrosafioLauncher(WindowChrome, ctk.CTk):
             self.set_status("Iniciando Minecraft…")
             self.set_progress(1)
             proc = launch_minecraft(version_id=version, mc_dir=mc_dir, game_dir=game_dir, username=nick,
-                ram_gb=ram_gb, java_exe=java, server_ip=config.get("server_ip"), status_callback=self.set_status)
+                ram_gb=ram_gb, java_exe=java, server_ip=resolve_server_ip(config.get("server_ip"), manifest), status_callback=self.set_status)
 
             # Detectar si la JVM finaliza tempranamente con error
             time.sleep(1.2)
