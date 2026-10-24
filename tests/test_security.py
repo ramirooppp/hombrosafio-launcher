@@ -11,15 +11,15 @@ from core.server_pinger import ping_server
 
 
 class SecurityChecks(unittest.TestCase):
-    def test_azure_address_migrates_but_custom_address_is_preserved(self):
+    def test_legacy_address_migrates_but_custom_address_is_preserved(self):
         from core import config
         with tempfile.TemporaryDirectory() as directory:
             path=Path(directory,"launcher_config.json")
-            for old in ("67.222.149.6","158.23.58.93:25565","158.23.58.93","149.202.84.78:25601"):
+            for old in ("67.222.149.6","67.222.149.6:25611","158.23.58.93:25565","158.23.58.93","149.202.84.78:25601"):
                 path.write_text(json.dumps({"server_ip":old,"username":"TestPlayer"}))
                 with patch.object(config,"get_config_path",return_value=str(path)):
                     result=config.load_config()
-                    self.assertEqual(result["server_ip"],"67.222.149.6:25611")
+                    self.assertEqual(result["server_ip"],"158.23.58.93:25565")
                     self.assertEqual(result["username"],"TestPlayer")
             path.write_text(json.dumps({"server_ip":"custom.example:25565"}))
             with patch.object(config,"get_config_path",return_value=str(path)):
@@ -32,7 +32,7 @@ class SecurityChecks(unittest.TestCase):
         for target in (None,"https://bad.example","bad.example:99999","bad.example:0","two hosts:25565"):
             self.assertEqual(resolve_server_ip(DEFAULT_SERVER_IP,{"server_ip":target}),DEFAULT_SERVER_IP)
         self.assertEqual(resolve_server_ip(DEFAULT_SERVER_IP,None),DEFAULT_SERVER_IP)
-        self.assertEqual(resolve_server_ip(DEFAULT_SERVER_IP,{"server_ip":"158.23.58.93:25565"}),DEFAULT_SERVER_IP)
+        self.assertEqual(resolve_server_ip(DEFAULT_SERVER_IP,{"server_ip":"67.222.149.6:25611"}),DEFAULT_SERVER_IP)
 
     def manifest(self, name="example.jar", body=b"verified mod"):
         return {"mods": [{"name": name, "url": "https://example.com/example.jar",
